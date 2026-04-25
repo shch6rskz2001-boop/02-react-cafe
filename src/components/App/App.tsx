@@ -1,19 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Votes, VoteType } from '../../types/votes';
 import CafeInfo from '../CafeInfo/CafeInfo';
 import VoteOptions from '../VoteOptions/VoteOptions';
 import VoteStats from '../VoteStats/VoteStats';
 import Notification from '../Notification/Notification/Notification';
-
-
 import css from './App.module.css';
 
 export default function App() {
-  const [votes, setVotes] = useState<Votes>({
-    good: 0,
-    neutral: 0,
-    bad: 0
+  // Ініціалізуємо стан значенням з LocalStorage або нулями
+  const [votes, setVotes] = useState<Votes>(() => {
+    const savedVotes = window.localStorage.getItem('saved-votes');
+    return savedVotes !== null 
+      ? JSON.parse(savedVotes) 
+      : { good: 0, neutral: 0, bad: 0 };
   });
+
+  // Щоразу, коли змінюється стан votes, записуємо його в LocalStorage
+  useEffect(() => {
+    window.localStorage.setItem('saved-votes', JSON.stringify(votes));
+  }, [votes]);
 
   const handleVote = (type: VoteType) => {
     setVotes(prevVotes => ({
@@ -48,7 +53,7 @@ export default function App() {
           positiveRate={positiveRate} 
         />
       ) : (
-        <Notification /> // Використовуємо компонент замість <p>
+        <Notification />
       )}
     </div>
   );
