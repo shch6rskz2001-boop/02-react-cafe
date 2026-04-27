@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
-import type { Votes } from "../../types/votes";
+
+import type { Votes, VoteType } from "../../types/votes"; 
+
 import CafeInfo from "../CafeInfo/CafeInfo";
 import VoteOptions from "../VoteOptions/VoteOptions";
 import VoteStats from "../VoteStats/VoteStats";
-import Notification from "../Notification/Notification/Notification";
+import Notification from "../Notification/Notification"; 
 import css from "./App.module.css";
 
 export default function App() {
@@ -18,7 +20,8 @@ export default function App() {
     window.localStorage.setItem("saved-votes", JSON.stringify(votes));
   }, [votes]);
 
-  const handleVote = (voteType: keyof Votes) => {
+  
+  const handleVote = (voteType: VoteType) => {
     setVotes((prev) => ({
       ...prev,
       [voteType]: prev[voteType] + 1,
@@ -43,10 +46,10 @@ export default function App() {
       />
 
       {totalVotes > 0 ? (
-        <VoteStats 
-          stats={votes} 
-          total={totalVotes} 
-          positivePercentage={positiveRate} 
+        <VoteStats
+          votes={votes}
+          totalVotes={totalVotes}
+          positiveRate={positiveRate}
         />
       ) : (
         <Notification />
@@ -54,4 +57,5 @@ export default function App() {
     </div>
   );
 }
+
 
