@@ -1,8 +1,10 @@
 import css from './VoteOptions.module.css';
+import type { VoteType } from '../../types/votes';
 
 
 interface VoteOptionsProps {
-  onVote: (type: 'good' | 'neutral' | 'bad') => void;
+
+  onVote: (type: VoteType) => void;
   onReset: () => void;
   canReset: boolean;
 }
@@ -14,7 +16,6 @@ export default function VoteOptions({ onVote, onReset, canReset }: VoteOptionsPr
       <button className={css.button} onClick={() => onVote('neutral')}>Neutral</button>
       <button className={css.button} onClick={() => onVote('bad')}>Bad</button>
       
-      {/* Кнопка Reset показується тільки якщо canReset === true */}
       {canReset && (
         <button className={`${css.button} ${css.reset}`} onClick={onReset}>
           Reset
@@ -23,3 +24,4 @@ export default function VoteOptions({ onVote, onReset, canReset }: VoteOptionsPr
     </div>
   );
 }
+
